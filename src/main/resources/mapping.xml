@@ -74,4 +74,19 @@
 
 
     </stream>
+    <!--CSV can be really handy if importing to a spreadsheet. Good that CSV has less configuration-->
+    <stream name="onlyDetailsCSV" format="csv" mode="write">
+
+
+        <record name="details" class="in.dpk.nitro.beans.Details" minOccurs="0" maxOccurs="unbounded">
+            <field name="firstName"/>
+            <field name="lastName"/>
+            <field name="dateOfBirth" type="date" format="ddMMyy"/>
+            <field name="phoneNumber" type="java.lang.Long"/>
+            <field name="filler" literal="#" padding="#"/>
+            <field name="annualIncome" type="double" format="####0"/>
+        </record>
+
+
+    </stream>
 </beanio>

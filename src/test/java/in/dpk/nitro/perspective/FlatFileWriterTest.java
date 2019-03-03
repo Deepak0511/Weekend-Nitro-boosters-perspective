@@ -18,9 +18,11 @@ class FlatFileWriterTest {
     private String xmlFileName;
     private String xmlDetailsOnlyFileName;
     private String mappingFileName;
+    private String csvFilename;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
+        mappingFileName = "src/main/resources/mapping.xml";
         Header header = new Header("H", "India", "Mumbai", " ", 123456L);
         Details detailsD = new Details("D", "Chaudhary", "Deepak", new Date(), 12345678987L, " ", 12000000D);
         Details detailsN = new Details("D", "Mishra", "Nayan", new Date(), 12345678987L, " ", 13000000D);
@@ -35,7 +37,7 @@ class FlatFileWriterTest {
         flatFileName = "target/output.flf";
         xmlFileName = "target/output.xml";
         xmlDetailsOnlyFileName = "target/xmlData.xml";
-        mappingFileName = "src/main/resources/mapping.xml";
+        csvFilename = "target/out.csv";
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -62,5 +64,17 @@ class FlatFileWriterTest {
             }
         });
         new FlatFileWriter(mappingFileName, xmlDetailsOnlyFileName).doWrite(objects, "onlyDetails");
+    }
+
+    @Test
+    void executeCSVDetailsOnlyWriter() {
+        objects.forEach(o -> {
+            if (o instanceof Header) {
+                objects.remove(o);
+            } else if (o instanceof Trailer) {
+                objects.remove(o);
+            }
+        });
+        new FlatFileWriter(mappingFileName, csvFilename).doWrite(objects, "onlyDetailsCSV");
     }
 }
