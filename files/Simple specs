@@ -1,0 +1,51 @@
+Simple Header-Detail-Trailer specification
+-------------------------------------------
+
+Record Type: Header - 38 bytes
+--------------------
+Description                 length    position      Type        indent
+-----------                 -------   ---------     -----      --------
+Header Identifier (H)       1         1             char        NA
+country                     15        2             string      left justified filled with space
+city                        15        17            string      left justified filled with space
+filler                      1         32            char
+pincode                     6         33            number      
+
+example:
+HIndia          Mumbai          123456
+
+
+Record Type: Details -
+---------------------------
+Description                     length      position        Type        indent
+------------                    ------      ---------       -----       --------
+Details Identifier (D)          1           1               char        
+Last Name                      13          2               string      left justified filled with space
+First Name                     13          15              string      left justified filled with space
+Date of birth(DDmmYY)           6           28              Date        
+phone number with country code  12          34              number 
+filler                          1           46              char     
+Annual income                   8           47              Amount      right justified zeros on left
+
+example:
+DChaudhary    Deepak       010101919999999999 01200000
+
+
+Record Type: Trailer-
+---------------------
+Description                     length      position        Type        indent
+-----------                     ------      ---------       ----        -------
+Trailer Identifier(T)           1           1               char        
+filler                          10          2               char
+record count                    6           12              number      right justified zeros on left.
+
+
+example:
+T          000010
+
+
+Collective:
+---------------
+HIndia          Mumbai          123456
+DChaudhary    Deepak       010101919999999999 01200000
+T          000001
