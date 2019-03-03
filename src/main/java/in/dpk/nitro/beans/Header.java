@@ -15,6 +15,9 @@ public class Header {
         this.pinCode = pinCode;
     }
 
+    public Header() {
+    }
+
     @Override
     public String toString() {
         return "Header{" +

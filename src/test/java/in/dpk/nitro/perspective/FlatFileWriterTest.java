@@ -3,8 +3,12 @@ package in.dpk.nitro.perspective;
 import in.dpk.nitro.beans.Details;
 import in.dpk.nitro.beans.Header;
 import in.dpk.nitro.beans.Trailer;
+import in.dpk.nitro.perspective.core.FlatFileWriter;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,7 +24,7 @@ class FlatFileWriterTest {
     private String mappingFileName;
     private String csvFilename;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         mappingFileName = "src/main/resources/mapping.xml";
         Header header = new Header("H", "India", "Mumbai", " ", 123456L);
@@ -40,18 +44,18 @@ class FlatFileWriterTest {
         csvFilename = "target/out.csv";
     }
 
-    @org.junit.jupiter.api.AfterEach
+    @AfterEach
     void tearDown() {
     }
 
     @Test
     void executeFlatFileWriter() {
-        new FlatFileWriter(mappingFileName, flatFileName).doWrite(objects, "contactsInput");
+        new FlatFileWriter(new File(mappingFileName), new File(flatFileName)).doWrite(objects, "contactsInput");
     }
 
     @Test
     void executeXmlWriter() {
-        new FlatFileWriter(mappingFileName, xmlFileName).doWrite(objects, "contactsOutput");
+        new FlatFileWriter(new File(mappingFileName), new File(xmlFileName)).doWrite(objects, "contactsOutput");
     }
 
     @Test
@@ -63,7 +67,7 @@ class FlatFileWriterTest {
                 objects.remove(o);
             }
         });
-        new FlatFileWriter(mappingFileName, xmlDetailsOnlyFileName).doWrite(objects, "onlyDetails");
+        new FlatFileWriter(new File(mappingFileName), new File(xmlDetailsOnlyFileName)).doWrite(objects, "onlyDetails");
     }
 
     @Test
@@ -75,6 +79,6 @@ class FlatFileWriterTest {
                 objects.remove(o);
             }
         });
-        new FlatFileWriter(mappingFileName, csvFilename).doWrite(objects, "onlyDetailsCSV");
+        new FlatFileWriter(new File(mappingFileName), new File(csvFilename)).doWrite(objects, "onlyDetailsCSV");
     }
 }

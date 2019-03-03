@@ -21,6 +21,9 @@ public class Details {
         this.annualIncome = annualIncome;
     }
 
+    public Details() {
+    }
+
     @Override
     public String toString() {
         return "Details{" +

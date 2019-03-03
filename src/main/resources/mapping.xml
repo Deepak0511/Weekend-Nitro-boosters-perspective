@@ -75,10 +75,11 @@
 
     </stream>
     <!--CSV can be really handy if importing to a spreadsheet. Good that CSV has less configuration-->
-    <stream name="onlyDetailsCSV" format="csv" mode="write">
+    <stream name="onlyDetailsCSV" format="csv">
 
 
         <record name="details" class="in.dpk.nitro.beans.Details" minOccurs="0" maxOccurs="unbounded">
+            <field name="identifier" rid="true" literal="D" ignore="false"/>
             <field name="firstName"/>
             <field name="lastName"/>
             <field name="dateOfBirth" type="date" format="ddMMyy"/>

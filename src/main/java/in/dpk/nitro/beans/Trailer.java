@@ -11,6 +11,9 @@ public class Trailer {
         this.recordCount = recordCount;
     }
 
+    public Trailer() {
+    }
+
     @Override
     public String toString() {
         return "Trailer{" +
