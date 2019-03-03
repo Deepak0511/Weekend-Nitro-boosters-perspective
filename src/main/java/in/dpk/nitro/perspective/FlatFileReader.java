@@ -15,12 +15,12 @@ public class FlatFileReader {
         // load the mapping file from the working directory
         factory.load("mapping.xml");
 
-        // create a BeanReader to read from "input.csv"
+        // create a BeanReader to read from input file
         BeanReader in = factory.createReader("contacts", new File("input.csv"));
 
         Object record = null;
 
-        // read records from "input.csv"
+        // read records from "input"
         while ((record = in.read()) != null) {
 
             // process each record

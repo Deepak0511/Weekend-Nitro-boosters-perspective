@@ -3,15 +3,21 @@ package in.dpk.nitro.perspective;
 import in.dpk.nitro.beans.Details;
 import in.dpk.nitro.beans.Header;
 import in.dpk.nitro.beans.Trailer;
-import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ *
+ */
 class FlatFileWriterTest {
-    List<Object> objects;
+    private List<Object> objects;
+    private String flatFileName;
+    private String xmlFileName;
+    private String xmlDetailsOnlyFileName;
+    private String mappingFileName;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -20,11 +26,16 @@ class FlatFileWriterTest {
         Details detailsN = new Details("D", "Mishra", "Nayan", new Date(), 12345678987L, " ", 13000000D);
         Trailer trailer = new Trailer("T", " ", 2L);
 
-        objects = new ArrayList<>();
+        objects = new CopyOnWriteArrayList<>();
         objects.add(header);
         objects.add(detailsD);
         objects.add(detailsN);
         objects.add(trailer);
+
+        flatFileName = "target/output.flf";
+        xmlFileName = "target/output.xml";
+        xmlDetailsOnlyFileName = "target/xmlData.xml";
+        mappingFileName = "src/main/resources/mapping.xml";
     }
 
     @org.junit.jupiter.api.AfterEach
@@ -33,12 +44,23 @@ class FlatFileWriterTest {
 
     @Test
     void executeFlatFileWriter() {
-        new FlatFileWriter().doWrite(objects, "contactsInput");
+        new FlatFileWriter(mappingFileName, flatFileName).doWrite(objects, "contactsInput");
     }
 
     @Test
-    @Ignore
     void executeXmlWriter() {
-        new FlatFileWriter().doWrite(objects, "contactsOutput");
+        new FlatFileWriter(mappingFileName, xmlFileName).doWrite(objects, "contactsOutput");
+    }
+
+    @Test
+    void executeXmlDetailsOnlyWriter() {
+        objects.forEach(o -> {
+            if (o instanceof Header) {
+                objects.remove(o);
+            } else if (o instanceof Trailer) {
+                objects.remove(o);
+            }
+        });
+        new FlatFileWriter(mappingFileName, xmlDetailsOnlyFileName).doWrite(objects, "onlyDetails");
     }
 }

@@ -2,7 +2,6 @@
 
     <!-- 'format' identifies the type of stream -->
     <stream name="contactsInput" format="fixedlength">
-        <!-- 'class' binds the header record to a java.util.HashMap -->
         <record name="header" class="in.dpk.nitro.beans.Header" order="1" minOccurs="1" maxOccurs="1">
             <!-- 'rid' indicates this field is used to identify the record -->
             <field name="identifier" rid="true" literal="H" position="0" length="1"/>
@@ -10,10 +9,8 @@
             <field name="city" position="16" length="15" align="left"/>
             <field name="filler" position="31" length="1"/>
             <field name="pinCode" position="32" length="6" align="right"/>
-            <!-- 'format' can be used to provide Date and Number formats -->
         </record>
 
-        <!-- Detail records are bound to example.Contact -->
         <record name="details" class="in.dpk.nitro.beans.Details" order="2" minOccurs="0" maxOccurs="unbounded">
             <!-- 'ignore' indicates this field is not bound to a bean property -->
             <field name="identifier" rid="true" literal="D" ignore="false" position="0" length="1"/>
@@ -36,39 +33,45 @@
         </record>
 
     </stream>
-    <stream name="contactsOutput" format="xml">
-        <!-- 'class' binds the header record to a java.util.HashMap -->
-        <record name="header" class="in.dpk.nitro.beans.Header" order="1" minOccurs="1" maxOccurs="1">
-            <!-- 'rid' indicates this field is used to identify the record -->
-            <!--<field name="identifier" rid="true" literal="H" position="0" length="1" ignore="true"/>-->
-            <field name="country" position="1" length="15" align="left"/>
-            <field name="city" position="16" length="15" align="left"/>
-            <field name="filler" position="31" length="1"/>
-            <field name="pinCode" position="32" length="6" align="right"/>
-            <!-- 'format' can be used to provide Date and Number formats -->
+    <stream name="contactsOutput" format="xml" mode="write">
+        <!-- Some how padding is necessary for xml stream creation which seems like a bug with BeanIO -->
+        <record name="header" class="in.dpk.nitro.beans.Header" order="1" minOccurs="0" maxOccurs="1">
+            <field name="country" position="1" length="15" align="left" padding=" "/>
+            <field name="city" position="16" length="15" align="left" padding=" "/>
+            <field name="filler" position="31" length="1" padding=" "/>
+            <field name="pinCode" position="32" length="6" align="right" padding="0"/>
         </record>
 
-        <!-- Detail records are bound to example.Contact -->
         <record name="details" class="in.dpk.nitro.beans.Details" order="2" minOccurs="0" maxOccurs="unbounded">
-            <!-- 'ignore' indicates this field is not bound to a bean property -->
-            <!--<field name="identifier" rid="true" literal="D" ignore="true" position="0" length="1" />-->
-            <field name="firstName" position="14" length="13" align="left"/>
-            <field name="lastName" position="1" length="13" align="left"/>
-            <field name="dateOfBirth" type="date" format="ddMMyy" position="27" length="6"/>
-            <field name="phoneNumber" type="java.lang.Long" position="33" length="12" align="right"/>
-            <field name="filler" position="45" length="1"/>
+            <field name="firstName" position="14" length="13" align="left" padding=" "/>
+            <field name="lastName" position="1" length="13" align="left" padding=" "/>
+            <field name="dateOfBirth" type="date" format="ddMMyy" position="27" length="6" padding="0"/>
+            <field name="phoneNumber" type="java.lang.Long" position="33" length="12" align="right" padding="+"/>
+            <field name="filler" position="45" length="1" padding=" "/>
             <field name="annualIncome" type="double" position="46" length="15" format="####0" padding="0"
                    align="right"/>
         </record>
 
-        <!-- 'target' binds the trailer record to the Integer record count field -->
-        <record name="trailer" class="in.dpk.nitro.beans.Trailer" order="3" minOccurs="1" maxOccurs="1">
-            <!-- 'literal' is used to define constant values -->
-            <!--<field name="identifier" rid="true" literal="T" position="0" ignore="true"/>-->
-            <field name="filler" position="1" length="10" align="left"/>
-            <!-- 'type' can be declared where bean introspection is not possible -->
-            <field name="recordCount" type="long" position="11" length="6" align="right"/>
+        <record name="trailer" class="in.dpk.nitro.beans.Trailer" order="3" minOccurs="0" maxOccurs="1">
+            <field name="filler" position="1" length="10" align="left" padding=" "/>
+            <field name="recordCount" type="long" position="11" length="6" align="right" padding="0"/>
         </record>
+
+    </stream>
+    <!--XML output only for Details records so that they can be easily imported into a spreadsheet-->
+    <stream name="onlyDetails" format="xml" mode="write">
+
+
+        <record name="details" class="in.dpk.nitro.beans.Details" order="2" minOccurs="0" maxOccurs="unbounded">
+            <field name="firstName" position="14" length="13" align="left" padding=" "/>
+            <field name="lastName" position="1" length="13" align="left" padding=" "/>
+            <field name="dateOfBirth" type="date" format="ddMMyy" position="27" length="6" padding="0"/>
+            <field name="phoneNumber" type="java.lang.Long" position="33" length="12" align="right" padding="+"/>
+            <field name="filler" position="45" length="1" padding=" "/>
+            <field name="annualIncome" type="double" position="46" length="15" format="####0" padding="0"
+                   align="right"/>
+        </record>
+
 
     </stream>
 </beanio>
