@@ -22,7 +22,7 @@ Description                     length      position        Type        indent
 Details Identifier (D)          1           1               char        
 Last Name                      13          2               string      left justified filled with space
 First Name                     13          15              string      left justified filled with space
-Date of birth(DDmmYY)           6           28              Date        
+Date of birth(ddMMyy)           6           28              Date
 phone number with country code  12          34              number 
 filler                          1           46              char     
 Annual income                   8           47              Amount      right justified zeros on left
